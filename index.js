@@ -14,12 +14,14 @@ var qs = require('querystringify')
  * - `handshake timeout`: Maximum time you're allowed to spend modifying the
  *   handshake.
  *
+ * @constructor
  * @param {Mixed} context Context of the callbacks.
  * @param {Object} options Optional configuration.
  * @api public
  */
 function Handshake(context, options) {
   if (!this) return new Handshake(context, options);
+
   options = options || {};
 
   this.configure = Object.create(null);
