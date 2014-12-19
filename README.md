@@ -9,4 +9,37 @@
 [cover]: https://img.shields.io/coveralls/unshiftio/handshake/master.svg?style=flat-square
 [irc]: https://img.shields.io/badge/IRC-irc.freenode.net%23unshift-00a8ff.svg?style=flat-square
 
-Parse and stringify handshake responses from unshift.io
+## Installation
+
+The module is released in the public npm registry and can be installed using:
+
+```
+npm install --save handshake
+```
+
+## Usage
+
+In all the examples we assume that you've already required and setup the
+Handshake instance using:
+
+```js
+'use strict';
+
+var Handshake = require('handshake');
+```
+
+To construct a new `Handshake` instance we need two things:
+
+1. A context/scope/this value for all the callbacks that we execute. Which is
+   required but can be set to null, undefined or whatever.
+2. Options for further configuring the handshake.
+
+So for the optional options, you can supply the following properties:
+
+- **`handshake timeout`** Maximum time a user is allowed to spend to modifying
+  the handshake data. As the last thing we want to do is introduce extra
+  latency. Defaults to `5 seconds`.
+
+## License
+
+MIT
