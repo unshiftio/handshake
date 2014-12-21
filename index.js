@@ -13,7 +13,8 @@ var qs = require('querystringify')
  *
  * - `handshake timeout`: Maximum time you're allowed to spend modifying the
  *   handshake.
- * - `stringify`: A custom handshake encoder, defaults to qs.stringify.
+ * - `stringify`: Encoder for the complete handshake response.
+ * - `id`: Unique id generator.
  *
  * @constructor
  * @param {Mixed} context Context of the callbacks.
@@ -25,9 +26,10 @@ function Handshake(context, options) {
 
   options = options || {};
 
-  this.stringify = options.stringify || Handshake.stringify;
+  this.stringify = options.stringify || qs.stringify;
   this.configure = Object.create(null);
   this.timers = new Tick(context);
+  this.id = options.id || v4;
   this.context = context;
   this.payload = {};
 
@@ -89,7 +91,7 @@ Handshake.prototype.set = function set(key, value) {
 Handshake.prototype.get = function get(modify, next) {
   var payload = dollars.object.clone(this.payload)
     , handshake = this
-    , id = v4();
+    , id = this.id();
 
   /**
    * Handle the modified handshake payload and encode it into a string which can
@@ -148,18 +150,17 @@ Handshake.prototype.get = function get(modify, next) {
 Handshake.prototype.destroy = function destroy() {
   if (!this.context) return false;
 
+  var nuke = 'stringify,configure,timers,id,context,payload,timeout'.split(',')
+    , handshake = this;
+
   this.timers.destroy();
-  this.context = this.timeout = this.timers = null;
+
+  dollars.each(nuke, function nullit(key) {
+    handshake[key] = null;
+  });
+
   return true;
 };
-
-/**
- * Handshake encoding.
- *
- * @type {Function}
- * @api public
- */
-Handshake.stringify = qs.stringify;
 
 //
 // Expose the handshake.
