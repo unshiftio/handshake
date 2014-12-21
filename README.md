@@ -112,6 +112,13 @@ gets the handshake payload. The `get` method requires 2 arguments:
 2. **Complete** The completion callback which follows an error first callback
    pattern.
 
+Errors are automatically handled by this function. When you return an error in
+sync mode, provide an error as first argument in async mode or if we fail to
+encode the object we will encode a special object which will have an `error`
+property set to the error message and we will supply this as data argument to
+the complete function. Don't worry, we will also still set the error argument
+but this way you will always have data to return.
+
 ```js
 handshake.get(function modify(payload) {
   payload.foo = 'bar';
