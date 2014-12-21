@@ -13,6 +13,7 @@ var qs = require('querystringify')
  *
  * - `handshake timeout`: Maximum time you're allowed to spend modifying the
  *   handshake.
+ * - `stringify`: A custom handshake encoder, defaults to qs.stringify.
  *
  * @constructor
  * @param {Mixed} context Context of the callbacks.
@@ -111,10 +112,12 @@ Handshake.prototype.get = function get(modify, next) {
     //
     if (err) payload.error = err.message;
 
-    try { data = handshake.stringify(payload); }
-    catch (e) { data = handshake.stringify({ error: e.message }); }
-
-    next.call(handshake.context, err, data);
+    dollars.catch(function catching() {
+      return handshake.stringify(payload);
+    }, function catched(failed, data) {
+      if (failed) data = handshake.stringify({ error: failed.message });
+      next.call(handshake.context, failed || err, data);
+    });
   });
 
   //

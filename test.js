@@ -139,6 +139,30 @@ describe('handshake', function () {
         done();
       });
     });
+
+    it('returns an error when stringify fails', function (done) {
+      shake.destroy();
+      shake = new Handshake(context, { 'stringify': JSON.stringify });
+
+      var foo = { bar: 'bar' };
+      foo.foo = foo;
+
+      shake.set('hello', 1314).update();
+
+      shake.get(function (payload, next) {
+        payload.foo = foo;
+        next();
+      }, function (err, data) {
+        assume(data).is.a('string');
+
+        data = JSON.parse(data);
+        assume(data).is.a('object');
+        assume(data.error).is.a('string');
+        assume(data.error).equals(err.message);
+
+        done();
+      });
+    });
   });
 
   describe('#destroy', function () {
