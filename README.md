@@ -104,12 +104,12 @@ handshake.update();
 This is where all the magic happens, this is the api what it's all about. It
 gets the handshake payload. The `get` method requires 2 arguments:
 
-1. **modify** A function which is called with the handshake object before it's
+1. **Modify** A function which is called with the handshake object before it's
    encoded. This allows you to modify and add values to the handshake. If the
    function has 1 argument we assume it's a synchronous call, if it has 2
    arguments we see it as an async call and add a callback function as last
    argument.
-2. **complete** The completion callback which follows an error first callback
+2. **Complete** The completion callback which follows an error first callback
    pattern.
 
 ```js
