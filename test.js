@@ -121,6 +121,24 @@ describe('handshake', function () {
         done();
       });
     });
+
+    it('can be configured with a custom stringify method', function (done) {
+      shake.destroy();
+      shake = new Handshake(context, { 'stringify': JSON.stringify });
+      shake.set('hello', 1314).update();
+
+      shake.get(function (payload, next) {
+        payload.foo = 'bar';
+        next();
+      }, function (err, data) {
+        data = JSON.parse(data);
+        assume(data).is.a('object');
+        assume(data.foo).equals('bar');
+        assume(data.hello).equals(1314);
+
+        done();
+      });
+    });
   });
 
   describe('#destroy', function () {
