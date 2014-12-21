@@ -24,6 +24,7 @@ function Handshake(context, options) {
 
   options = options || {};
 
+  this.stringify = options.stringify || Handshake.stringify;
   this.configure = Object.create(null);
   this.timers = new Tick(context);
   this.context = context;
@@ -109,7 +110,11 @@ Handshake.prototype.get = function get(modify, next) {
     // the connection was not allowed.
     //
     if (err) payload.error = err.message;
-    next.call(handshake.context, err, Handshake.encode(payload));
+
+    try { data = handshake.stringify(payload); }
+    catch (e) { data = handshake.stringify({ error: e.message }); }
+
+    next.call(handshake.context, err, data);
   });
 
   //
@@ -151,7 +156,7 @@ Handshake.prototype.destroy = function destroy() {
  * @type {Function}
  * @api public
  */
-Handshake.encode = qs.stringify;
+Handshake.stringify = qs.stringify;
 
 //
 // Expose the handshake.
