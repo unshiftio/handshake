@@ -22,7 +22,7 @@ reasons about this. When we are handshaking we do not know which protocols the
 server and clients support so we cannot encode and decode the data yet. So we
 need to have an encoding format which is super easy to parse for both the server
 and clients. In addition to that it's easy to debug as it's a human readable
-format. 
+format.
 
 ## Installation
 
@@ -54,6 +54,10 @@ So for the optional options, you can supply the following properties:
 - **`handshake timeout`** Maximum time a user is allowed to spend to modifying
   the handshake data. As the last thing we want to do is introduce extra
   latency. Defaults to `5 seconds`.
+- **`stringify`** Custom stringify method which will be used to completely
+  encode the handshake. Defaults to `querystringify.stringify`.
+- **`id`** Unique id generator which will be called for each `handshake.get`
+  call. Defaults to `uuid.v4`.
 
 For our examples we just assume it has been setup as following:
 
@@ -62,6 +66,23 @@ var handshake = new Handshake();
 ```
 
 ### set
+
+The set method allows you to assign properties on the handshake that should be
+added to every `.get` call. The method accepts 2 arguments.
+
+1. `key` The name of the property which should be added to the handshake.
+2. `value` The value that needs to be stored. If you supply a function it will
+   be called every time the `handshake.update()` method is called. The returned
+   result of the function will be set as result.
+
+```js
+handshake
+.set('version', require('./package.json').version)
+.set('another', 'value')
+.set('generated', function () {
+  return 'foo';
+});
+```
 
 ### update
 
@@ -76,6 +97,36 @@ handshake
 .set('another', 'value');
 
 handshake.update();
+```
+
+### get
+
+This is where all the magic happens, this is the api what it's all about. It
+gets the handshake payload. The `get` method requires 2 arguments:
+
+1. **modify** A function which is called with the handshake object before it's
+   encoded. This allows you to modify and add values to the handshake. If the
+   function has 1 argument we assume it's a synchronous call, if it has 2
+   arguments we see it as an async call and add a callback function as last
+   argument.
+2. **complete** The completion callback which follows an error first callback
+   pattern.
+
+```js
+handshake.get(function modify(payload) {
+  payload.foo = 'bar';
+}, function generated(err, data) {
+  // do things
+});
+```
+
+### destroy
+
+Destroy the created handshake instance. This releases all internal references so
+it can be reclaimed by the garbage collector.
+
+```js
+handshake.destroy();
 ```
 
 ## License
