@@ -1,6 +1,6 @@
 {
   "name": "handshake",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Handshake processing for unshift.io",
   "main": "index.js",
   "scripts": {
