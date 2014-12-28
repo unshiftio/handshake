@@ -68,7 +68,7 @@ var handshake = new Handshake();
 ### set
 
 The set method allows you to assign properties on the handshake that should be
-added to every `.get` call. The method accepts 2 arguments.
+added to every `.get` call. The method requires 2 arguments.
 
 1. `key` The name of the property which should be added to the handshake.
 2. `value` The value that needs to be stored. If you supply a function it will
