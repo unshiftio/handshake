@@ -1,6 +1,7 @@
 'use strict';
 
 var qs = require('querystringify')
+  , demolish = require('demolish')
   , dollars = require('dollars')
   , v4 = require('node-uuid').v4
   , Tick = require('tick-tock')
@@ -144,23 +145,11 @@ Handshake.prototype.get = function get(modify, next) {
 /**
  * Destroy the handshake and release all the references it was once holding.
  *
+ * @type {Function}
  * @returns {Boolean}
  * @api public
  */
-Handshake.prototype.destroy = function destroy() {
-  if (!this.context) return false;
-
-  var nuke = 'stringify,configure,timers,id,context,payload,timeout'.split(',')
-    , handshake = this;
-
-  this.timers.destroy();
-
-  dollars.each(nuke, function nullit(key) {
-    handshake[key] = null;
-  });
-
-  return true;
-};
+Handshake.prototype.destroy = demolish('stringify configure timers id context payload timeout');
 
 //
 // Expose the handshake.

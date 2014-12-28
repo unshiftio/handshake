@@ -1,6 +1,6 @@
 {
   "name": "handshake",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Handshake processing for unshift.io",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/unshiftio/handshake",
   "dependencies": {
+    "demolish": "1.0.x",
     "dollars": "0.0.x",
     "node-uuid": "1.4.x",
     "one-time": "0.0.x",
