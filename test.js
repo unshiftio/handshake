@@ -22,6 +22,12 @@ describe('handshake', function () {
     it('returns it self', function () {
       assume(shake.set('foo', 'bar')).equals(shake);
     });
+
+    it('throws an error when trying to set an undefined value', function () {
+      assume(function () {
+        shake.set('version', undefined);
+      }).throws(/Cannot set undefined as value for: version/);
+    });
   });
 
   describe('#update', function () {

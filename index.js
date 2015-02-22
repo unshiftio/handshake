@@ -77,6 +77,10 @@ Handshake.prototype.update = function update() {
  * @api public
  */
 Handshake.prototype.set = function set(key, value) {
+  if (value === undefined) {
+    throw new Error('Cannot set undefined as value for: '+key);
+  }
+
   this.configure[key] = value;
   return this;
 };
