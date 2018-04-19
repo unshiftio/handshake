@@ -28,7 +28,7 @@
     "dollars": "0.0.x",
     "node-uuid": "1.4.x",
     "one-time": "0.0.x",
-    "querystringify": "~1.0.0",
+    "querystringify": "~2.0.0",
     "tick-tock": "~1.0.0"
   },
   "devDependencies": {
