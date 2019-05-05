@@ -27,7 +27,7 @@
     "demolish": "1.0.x",
     "dollars": "0.0.x",
     "node-uuid": "1.4.x",
-    "one-time": "0.0.x",
+    "one-time": "~1.0.0",
     "querystringify": "~2.1.0",
     "tick-tock": "~1.0.0"
   },
